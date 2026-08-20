@@ -1,69 +1,258 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Navbar from '@/components/Navbar';
+import DestinationsMegaMenu from '@/components/DestinationsMegaMenu';
+import Hero from '@/components/Hero';
+import SideActions from '@/components/SideActions';
+import StoryIntro from '@/components/StoryIntro';
+import InteractiveIndiaMap from '@/components/InteractiveIndiaMap';
+import CulturalShadows from '@/components/CulturalShadows';
+import TourismCircuits from '@/components/TourismCircuits';
+import IndiaThroughTheLens from '@/components/IndiaThroughTheLens';
+import BharatMementos from '@/components/BharatMementos';
+import FestivalCalendar from '@/components/FestivalCalendar';
+import WildBharat from '@/components/WildBharat';
+import BeyondThePostcard from '@/components/BeyondThePostcard';
+import SmartTravelSection from '@/components/SmartTravelSection';
+import ResponsibleTourism from '@/components/ResponsibleTourism';
+import FinalCTA from '@/components/FinalCTA';
+import Footer from '@/components/Footer';
+
+// Modals & Cultural Ecosystem Overlays
+import BharatAIModal from '@/components/BharatAIModal';
+import CulturalPassportModal from '@/components/CulturalPassportModal';
+import MyBharatModal from '@/components/MyBharatModal';
+import GlobalSearch from '@/components/GlobalSearch';
+import DocumentaryModal from '@/components/DocumentaryModal';
+import DestinationExperienceModal from '@/components/DestinationExperienceModal';
+import SanctuaryModal from '@/components/SanctuaryModal';
+import FestivalModal from '@/components/FestivalModal';
+import WebsiteFeedbackModal from '@/components/WebsiteFeedbackModal';
+import GuidesDirectoryModal from '@/components/GuidesDirectoryModal';
+import ContactModal from '@/components/ContactModal';
+import FloatingAIChatButton from '@/components/FloatingAIChatButton';
+import { ItineraryPlan, defaultItineraries } from '@/data/gisCoordinates';
 
 export default function Home() {
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [isAIPlannerOpen, setIsAIPlannerOpen] = useState(false);
+  const [isPassportOpen, setIsPassportOpen] = useState(false);
+  const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isGuidesOpen, setIsGuidesOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
+  const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
+  const [selectedDestId, setSelectedDestId] = useState<string | null>(null);
+  const [selectedSanctuaryId, setSelectedSanctuaryId] = useState<string | null>(null);
+  const [selectedFestivalId, setSelectedFestivalId] = useState<string | null>(null);
+  const [activePlan, setActivePlan] = useState<ItineraryPlan>(defaultItineraries['lucknow-3day']);
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      {/* ── 00: Sticky Transparent / Solid National Navigation ── */}
+      <Navbar
+        onOpenMegaMenu={() => setIsMegaMenuOpen(true)}
+        onOpenAIPlanner={() => setIsAIPlannerOpen(true)}
+        onOpenPassport={() => setIsPassportOpen(true)}
+        onOpenBookmarks={() => setIsBookmarksOpen(true)}
+        onOpenSearch={() => setIsSearchOpen(true)}
+      />
+
+      {/* ── 00: Interactive Destinations Mega Menu ───────────── */}
+      <DestinationsMegaMenu
+        isOpen={isMegaMenuOpen}
+        onClose={() => setIsMegaMenuOpen(false)}
+        onSelectState={() => scrollToSection('interactive-map')}
+        onSelectDestination={(destId) => setSelectedDestId(destId)}
+        onSelectPark={(parkId) => setSelectedSanctuaryId(parkId)}
+      />
+
+      {/* ── 00: Vertical Edge Side Actions ───────────────────── */}
+      <SideActions
+        onOpenAIPlanner={() => setIsAIPlannerOpen(true)}
+        onScrollToShadows={() => scrollToSection('cultural-shadows')}
+      />
+
+      {/* ── 01: Full-Screen Cinematic Video Hero with Sound ──── */}
+      <Hero />
+
+      {/* ── 02: Editorial Narrative: India is Not One Destination ── */}
+      <div id="discover">
+        <StoryIntro />
+      </div>
+
+      {/* ── 03: Interactive India Map (Destinations, Parks, Shadows) ── */}
+      <InteractiveIndiaMap
+        onSelectDestination={(destId) => setSelectedDestId(destId)}
+        onSelectPark={(parkId) => setSelectedSanctuaryId(parkId)}
+        onRevealShadow={() => scrollToSection('cultural-shadows')}
+      />
+
+      {/* ── 04: Signature Feature: Cultural Shadows ─────────── */}
+      <CulturalShadows />
+
+      {/* ── 05: Journeys Through Bharat (Thematic Circuits & AI Routes) ── */}
+      <TourismCircuits
+        onPlanWithAI={(circuitName) => setIsAIPlannerOpen(true)}
+        onSelectCity={(city) => setSelectedDestId(city.toLowerCase())}
+      />
+
+      {/* ── 06: India Through the Lens (Documentary Heritage Stories) ── */}
+      <IndiaThroughTheLens
+        onWatchStory={(docId) => setSelectedDocId(docId)}
+        onSelectLocation={(loc) => setSelectedDestId(loc.toLowerCase())}
+      />
+
+      {/* ── 07: Bharat Mementos (Authentic Cultural Keepsakes & Artisans) ── */}
+      <BharatMementos />
+
+      {/* ── 08: India in Season (Annual 12-Month Festival Discovery) ── */}
+      <FestivalCalendar
+        onSelectFestival={(id) => setSelectedFestivalId(id)}
+      />
+
+      {/* ── 09: Wild Bharat (National Parks & Protected Sanctuaries) ── */}
+      <WildBharat
+        onSelectSanctuary={(id) => setSelectedSanctuaryId(id)}
+      />
+
+      {/* ── 10: Beyond the Postcard (Hidden Waterfalls, Caves & Forts) ── */}
+      <BeyondThePostcard
+        onSelectDestination={(destId) => setSelectedDestId(destId)}
+      />
+
+      {/* ── 11: Plan Smart (24x7 Tourist Helplines & Climate Guide) ── */}
+      <SmartTravelSection />
+
+      {/* ── 12: Ethical & Responsible Tourism ───────────────── */}
+      <ResponsibleTourism />
+
+      {/* ── 13: Final Call to Exploration & Floating Chatbot Flow ── */}
+      <FinalCTA
+        onOpenAIPlanner={() => setIsAIPlannerOpen(true)}
+        onScrollToCircuits={() => scrollToSection('circuits')}
+        onScrollToShadows={() => scrollToSection('cultural-shadows')}
+      />
+
+      {/* Bharat AI Chatbot Button (Scrolls naturally with page) */}
+      <FloatingAIChatButton onOpen={() => setIsAIPlannerOpen(true)} />
+
+      <Footer
+        onOpenMegaMenu={() => setIsMegaMenuOpen(true)}
+        onOpenAIPlanner={() => setIsAIPlannerOpen(true)}
+        onOpenPassport={() => setIsPassportOpen(true)}
+        onOpenBookmarks={() => setIsBookmarksOpen(true)}
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
+        onOpenGuides={() => setIsGuidesOpen(true)}
+        onOpenContact={() => setIsContactOpen(true)}
+      />
+
+      {/* ─────────────────────────────────────────────────────────────
+          Interactive Modals & Ecosystem Intelligence Overlays
+          ───────────────────────────────────────────────────────────── */}
+      
+      {/* 1. Bharat AI Travel Companion Chatbot */}
+      <BharatAIModal
+        isOpen={isAIPlannerOpen}
+        onClose={() => setIsAIPlannerOpen(false)}
+        onSelectItineraryOnMap={(plan) => setActivePlan(plan)}
+      />
+
+      {/* 2. My Bharat Cultural Passport Booklet */}
+      <CulturalPassportModal
+        isOpen={isPassportOpen}
+        onClose={() => setIsPassportOpen(false)}
+      />
+
+      {/* 3. My Bharat Saved Bookmarks Ledger */}
+      <MyBharatModal
+        isOpen={isBookmarksOpen}
+        onClose={() => setIsBookmarksOpen(false)}
+      />
+
+      {/* 4. Universal Global Search */}
+      <GlobalSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onSelectResult={(type, id) => {
+          if (type === 'destination') {
+            setSelectedDestId(id);
+          } else if (type === 'national-park') {
+            setSelectedSanctuaryId(id);
+          } else if (type === 'festival') {
+            setSelectedFestivalId(id);
+          }
+        }}
+        onAskAI={() => {
+          setIsAIPlannerOpen(true);
+        }}
+      />
+
+      {/* 5. "Watch the Story" Cinema Player */}
+      <DocumentaryModal
+        storyId={selectedDocId}
+        onClose={() => setSelectedDocId(null)}
+      />
+
+      {/* 6. Destination Deep-Dive Modal */}
+      <DestinationExperienceModal
+        destinationId={selectedDestId}
+        onClose={() => setSelectedDestId(null)}
+        onWatchDocumentary={(docId) => setSelectedDocId(docId)}
+        onPlanWithAI={() => {
+          setIsAIPlannerOpen(true);
+        }}
+      />
+
+      {/* 7. Protected Sanctuary & National Park Deep-Dive Modal */}
+      <SanctuaryModal
+        sanctuaryId={selectedSanctuaryId}
+        onClose={() => setSelectedSanctuaryId(null)}
+        onPlanWithAI={() => {
+          setIsAIPlannerOpen(true);
+        }}
+        onViewOnMap={() => {
+          scrollToSection('interactive-map');
+        }}
+      />
+
+      {/* 8. Annual 12-Month Festival Experience Modal */}
+      <FestivalModal
+        festivalId={selectedFestivalId}
+        onClose={() => setSelectedFestivalId(null)}
+        onPlanWithAI={() => {
+          setIsAIPlannerOpen(true);
+        }}
+        onViewOnMap={() => {
+          scrollToSection('interactive-map');
+        }}
+      />
+
+      {/* 9. Website Feedback Modal */}
+      <WebsiteFeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
+
+      {/* 10. Guides of Bharat Directory & Review Modal */}
+      <GuidesDirectoryModal
+        isOpen={isGuidesOpen}
+        onClose={() => setIsGuidesOpen(false)}
+        onWatchStory={(docId) => setSelectedDocId(docId)}
+      />
+
+      {/* 11. Contact Bharat Bharman Modal */}
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+      />
+    </>
   );
 }

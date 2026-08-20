@@ -1,26 +1,289 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-navy: #062A4F;
+  --color-navy-dark: #041A31;
+  --color-navy-light: #0D3F72;
+  --color-navy-card: #082F57;
+  --color-saffron: #F28C28;
+  --color-saffron-dark: #D67417;
+  --color-saffron-light: #FFA144;
+  --color-green: #168447;
+  --color-green-dark: #0E6534;
+  --color-green-light: #20A55B;
+  --color-ivory: #FFF8EC;
+  --color-ivory-muted: #EFE4D2;
+  --color-gold: #C89B3C;
+  --color-gold-light: #DFB55B;
+  --color-sandstone: #D8C3A5;
+  --color-terracotta: #C4724E;
+  --color-charcoal: #041A31;
+
+  --font-heading: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Global Reset & Base ─────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background-color: #041A31;
+  color: #FFF8EC;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── Dynamic Theme Mode Customizations ──────────── */
+[data-theme="light"] body {
+  background-color: #0B2542;
+  filter: contrast(105%);
+}
+
+[data-theme="vedic"] body {
+  background-color: #031D17;
+}
+
+[data-theme="vedic"] {
+  --color-saffron: #E2B743;
+  --color-gold: #F1D479;
+}
+
+::selection {
+  background-color: #F28C28;
+  color: #FFFFFF;
+}
+
+/* ── Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #041A31;
+}
+::-webkit-scrollbar-thumb {
+  background: #F28C28;
+  border-radius: 3px;
+}
+
+/* ── Typography Utilities ────────────────────────── */
+.font-heading {
+  font-family: var(--font-heading);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+
+.text-editorial {
+  font-family: var(--font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.text-cinematic {
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+/* ── Animations ──────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-scroll-bounce {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.animate-ken-burns {
+  animation: kenBurns 20s ease-in-out alternate infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* ── Gradient Overlays ───────────────────────────── */
+.gradient-overlay-dark {
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 26, 49, 0.75) 0%,
+    rgba(4, 26, 49, 0.35) 35%,
+    rgba(4, 26, 49, 0.6) 70%,
+    rgba(4, 26, 49, 0.98) 100%
+  );
+}
+
+.gradient-overlay-navy {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(4, 26, 49, 0.85) 70%,
+    rgba(4, 26, 49, 1) 100%
+  );
+}
+
+/* ── Glass & Cards ───────────────────────────────── */
+.glass-navy {
+  background: rgba(6, 42, 79, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 248, 236, 0.1);
+}
+
+.glass-light {
+  background: rgba(255, 248, 236, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 248, 236, 0.08);
+}
+
+.glass-green {
+  background: rgba(22, 132, 71, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(22, 132, 71, 0.25);
+}
+
+/* ── Accent Lines ────────────────────────────────── */
+.accent-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to right, #F28C28, #168447);
+}
+
+.accent-line-tricolor {
+  width: 90px;
+  height: 3px;
+  background: linear-gradient(to right, #F28C28 33%, #FFFFFF 33%, #FFFFFF 66%, #168447 66%);
+  border-radius: 2px;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, #F28C28, #D67417);
+  color: #FFFFFF;
+  padding: 13px 32px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(242, 140, 40, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(6, 42, 79, 0.6);
+  color: #FFF8EC;
+  padding: 13px 32px;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 248, 236, 0.25);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover {
+  border-color: #F28C28;
+  color: #F28C28;
+  background: rgba(242, 140, 40, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #168447, #0E6534);
+  color: #FFFFFF;
+  padding: 12px 28px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+.btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(22, 132, 71, 0.4);
+}
+
+/* ── Category Pill ───────────────────────────────── */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border: 1px solid rgba(255, 248, 236, 0.15);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+  color: #EFE4D2;
+  background: rgba(6, 42, 79, 0.4);
+  transition: all 0.3s ease;
+}
+.category-pill:hover {
+  border-color: #F28C28;
+  color: #F28C28;
+}
+
+/* ── Cinematic Section Spacing ───────────────────── */
+.section-cinematic {
+  padding-top: clamp(4.5rem, 10vh, 8.5rem);
+  padding-bottom: clamp(4.5rem, 10vh, 8.5rem);
 }
