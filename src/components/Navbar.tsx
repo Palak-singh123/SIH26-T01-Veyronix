@@ -118,7 +118,7 @@ export default function Navbar({
         }`}
         style={{ paddingTop: scrolled ? '8px' : '14px', paddingBottom: scrolled ? '8px' : '14px' }}
       >
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <div className="w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-14 flex items-center justify-between">
           {/* ── Brand Logo + Wordmark ─────────────── */}
           <a
             href="#"
