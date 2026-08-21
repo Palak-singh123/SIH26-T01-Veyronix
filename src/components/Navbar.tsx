@@ -66,19 +66,33 @@ export default function Navbar({
 
   const smoothScroll = useCallback((href: string, pageRoute?: string) => {
     if (typeof window !== 'undefined') {
+      if (pageRoute && (pageRoute === '/my-bharat' || pageRoute.startsWith('/'))) {
+        window.location.href = pageRoute;
+        return;
+      }
+      if (href.startsWith('/')) {
+        window.location.href = href;
+        return;
+      }
       if (window.location.pathname !== '/' && pageRoute) {
         window.location.href = pageRoute;
         return;
       }
-      if (href === '#') {
+      if (href === '#' || href === '') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        const el = document.querySelector(href);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (pageRoute) {
-          window.location.href = pageRoute;
+      } else if (href.startsWith('#')) {
+        try {
+          const el = document.querySelector(href);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else if (pageRoute) {
+            window.location.href = pageRoute;
+          }
+        } catch {
+          if (pageRoute) window.location.href = pageRoute;
         }
+      } else if (pageRoute) {
+        window.location.href = pageRoute;
       }
     }
     setIsOpen(false);
@@ -173,6 +187,23 @@ export default function Navbar({
                     <span>{item.label}</span>
                     <span className="text-[8px] text-saffron group-hover:rotate-180 transition-transform">▾</span>
                   </button>
+                );
+              }
+
+              if (item.pageRoute && item.pageRoute.startsWith('/') && !item.href.startsWith('#')) {
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.pageRoute}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] tracking-[0.1em] uppercase font-heading transition-all duration-200 ${
+                      isActive
+                        ? 'bg-saffron/15 text-saffron font-semibold border border-saffron/30'
+                        : 'text-ivory/75 hover:text-white hover:bg-white/5 border border-transparent'
+                    }`}
+                  >
+                    <span className="text-xs">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
                 );
               }
 
@@ -353,27 +384,50 @@ export default function Navbar({
               {/* Section Links */}
               {navLinks
                 .filter((item) => !item.isMega)
-                .map((item, i) => (
-                  <motion.a
-                    key={item.label}
-                    href={item.pageRoute || item.href}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.04 }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      smoothScroll(item.href, item.pageRoute);
-                    }}
-                    className={`text-base font-heading tracking-[0.15em] uppercase transition-colors flex items-center gap-2.5 ${
-                      activeSection === item.href.replace('#', '')
-                        ? 'text-saffron font-semibold'
-                        : 'text-ivory hover:text-saffron'
-                    }`}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
-                  </motion.a>
-                ))}
+                .map((item, i) => {
+                  if (item.pageRoute && item.pageRoute.startsWith('/') && !item.href.startsWith('#')) {
+                    return (
+                      <motion.div
+                        key={item.label}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        className="w-full text-center"
+                      >
+                        <Link
+                          href={item.pageRoute}
+                          onClick={() => setIsOpen(false)}
+                          className="text-base font-heading tracking-[0.15em] uppercase transition-colors flex items-center justify-center gap-2.5 text-ivory hover:text-saffron"
+                        >
+                          <span>{item.icon}</span>
+                          <span>{item.label}</span>
+                        </Link>
+                      </motion.div>
+                    );
+                  }
+
+                  return (
+                    <motion.a
+                      key={item.label}
+                      href={item.pageRoute || item.href}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.04 }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        smoothScroll(item.href, item.pageRoute);
+                      }}
+                      className={`text-base font-heading tracking-[0.15em] uppercase transition-colors flex items-center gap-2.5 ${
+                        activeSection === item.href.replace('#', '')
+                          ? 'text-saffron font-semibold'
+                          : 'text-ivory hover:text-saffron'
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span>{item.label}</span>
+                    </motion.a>
+                  );
+                })}
             </div>
 
             {/* Mobile AI CTA */}
