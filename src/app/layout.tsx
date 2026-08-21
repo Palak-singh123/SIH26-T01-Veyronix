@@ -61,6 +61,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { UserProfileProvider } from "@/context/UserProfileContext";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -72,7 +74,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LanguageProvider>
             <PassportProvider>
               <BookmarksProvider>
-                {children}
+                <UserProfileProvider>
+                  {children}
+                </UserProfileProvider>
               </BookmarksProvider>
             </PassportProvider>
           </LanguageProvider>

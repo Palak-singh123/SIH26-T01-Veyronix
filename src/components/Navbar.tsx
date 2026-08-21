@@ -93,6 +93,7 @@ export default function Navbar({
     { label: 'Shadows', href: '#cultural-shadows', pageRoute: '/cultural-shadows', icon: '✦' },
     { label: 'Stories', href: '#documentaries', pageRoute: '/stories', icon: '🎬' },
     { label: 'Guides', href: '#guides', pageRoute: '/guides', icon: '👥' },
+    { label: 'My Bharat', href: '/my-bharat', pageRoute: '/my-bharat', icon: '🇮🇳' },
   ];
 
   return (
