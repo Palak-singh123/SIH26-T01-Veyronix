@@ -103,12 +103,9 @@ export default function Navbar({
     { label: 'Home', href: '#', pageRoute: '/', icon: '🏠' },
     { label: 'Destinations', href: '#explore', pageRoute: '/destinations', icon: '🏛️', isMega: true },
     { label: 'Experiences', href: '#explore', pageRoute: '/experiences', icon: '🗺️' },
-    { label: 'Plan', href: '#gis-map', pageRoute: '/plan', icon: '🧭' },
     { label: 'Festivals', href: '#festivals', pageRoute: '/festivals', icon: '🎭' },
-    { label: 'Shadows', href: '#cultural-shadows', pageRoute: '/cultural-shadows', icon: '✦' },
     { label: 'Stories', href: '#documentaries', pageRoute: '/stories', icon: '🎬' },
     { label: 'Guides', href: '#guides', pageRoute: '/guides', icon: '👥' },
-    { label: 'Dashboard', href: '/my-bharat', pageRoute: '/my-bharat', icon: '🇮🇳' },
   ];
 
   return (
@@ -165,7 +162,7 @@ export default function Navbar({
           </a>
 
           {/* ── Center Navigation Links (Desktop) ────────────── */}
-          <div className="hidden xl:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1.5">
             {navLinks.map((item) => {
               const isActive =
                 item.href === '#'
@@ -228,7 +225,7 @@ export default function Navbar({
             })}
           </div>
 
-          {/* ── Right Actions: Search, Language, Bookmarks, Passport, AI ── */}
+          {/* ── Right Actions: Search, Language, Theme, Passport, Dashboard, AI ── */}
           <div className="hidden lg:flex items-center gap-2.5">
             {/* Search Trigger */}
             <button
@@ -249,19 +246,6 @@ export default function Navbar({
             {/* Theme Selector */}
             <ThemeSelector />
 
-            {/* My Bharat Saved Bookmarks */}
-            <button
-              onClick={onOpenBookmarks}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-ivory/10 hover:border-gold/50 text-xs font-heading uppercase text-ivory/80 hover:text-gold transition-all"
-              title="My Bharat Saved Journeys"
-            >
-              <span>🔖</span>
-              <span className="hidden 2xl:inline">Saved</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-gold/20 text-gold text-[9px] font-bold min-w-[18px] text-center">
-                {totalBookmarksCount}
-              </span>
-            </button>
-
             {/* Cultural Passport Badge */}
             <button
               onClick={onOpenPassport}
@@ -275,7 +259,7 @@ export default function Navbar({
               </span>
             </button>
 
-            {/* My Bharat Dashboard Link */}
+            {/* Single Prominent My Bharat Dashboard Link */}
             <Link
               href="/my-bharat"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-gold/20 via-saffron/20 to-gold/20 border border-gold/50 hover:border-gold text-xs font-heading font-semibold uppercase text-gold hover:text-white transition-all shadow-md group"
@@ -346,15 +330,6 @@ export default function Navbar({
                 className="px-3 py-1.5 rounded-full bg-navy-card border border-gold/30 text-xs text-gold font-heading"
               >
                 🛂 Passport ({totalExperiencesCount})
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  if (onOpenBookmarks) onOpenBookmarks();
-                }}
-                className="px-3 py-1.5 rounded-full bg-navy-card border border-ivory/10 text-xs text-ivory font-heading"
-              >
-                🔖 ({totalBookmarksCount})
               </button>
             </div>
 
