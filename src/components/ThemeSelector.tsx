@@ -34,7 +34,7 @@ export default function ThemeSelector() {
       {/* Selector Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm bg-navy-card/80 hover:bg-navy border border-ivory/15 text-xs font-heading text-ivory/80 hover:text-white transition-all duration-200"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-ivory/15 hover:border-gold/50 text-xs font-heading text-ivory/90 hover:text-white transition-all duration-200 shadow-sm"
         title="Switch Theme (Dark / Light / Vedic)"
         aria-label="Theme Selector"
       >
@@ -42,7 +42,7 @@ export default function ThemeSelector() {
         <span className="hidden sm:inline text-[11px] font-medium tracking-wide">
           {isHindi ? activeThemeOption.nameHi.split(' ')[0] : isBengali ? activeThemeOption.nameBn.split(' ')[0] : activeThemeOption.name.split(' ')[0]}
         </span>
-        <span className="text-[9px] text-ivory/40">▼</span>
+        <span className="text-[8px] text-ivory/40">▾</span>
       </button>
 
       {/* Dropdown Menu */}
@@ -53,7 +53,7 @@ export default function ThemeSelector() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 mt-2 w-56 rounded-sm bg-navy-dark border border-ivory/20 shadow-2xl overflow-hidden z-50 p-1.5 space-y-1"
+            className="absolute right-0 mt-2 w-60 max-w-[calc(100vw-32px)] rounded-lg bg-[#031527] border border-gold/40 shadow-2xl overflow-hidden z-[99999] p-2 space-y-1 backdrop-blur-xl"
           >
             <div className="px-3 py-1.5 border-b border-ivory/10 text-[9px] uppercase font-heading text-saffron tracking-widest font-semibold">
               {isHindi ? 'थीम चुनें' : isBengali ? 'থিম নির্বাচন' : 'Select Theme Mode'}
@@ -65,19 +65,24 @@ export default function ThemeSelector() {
                 <button
                   key={opt.id}
                   onClick={() => handleSelectTheme(opt.id)}
-                  className={`w-full text-left px-3 py-2 rounded text-xs font-heading flex items-center justify-between transition-all ${
+                  className={`w-full text-left px-3 py-2.5 rounded-md text-xs font-heading flex items-center justify-between transition-all ${
                     isSelected
-                      ? 'bg-saffron text-white font-semibold shadow'
-                      : 'text-ivory/75 hover:bg-navy-card hover:text-white'
+                      ? 'bg-gradient-to-r from-saffron to-gold text-white font-bold shadow-md'
+                      : 'text-ivory/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <span className="text-base">{opt.icon}</span>
-                    <span className="tracking-wide">
-                      {isHindi ? opt.nameHi : isBengali ? opt.nameBn : opt.name}
-                    </span>
+                    <div className="flex flex-col">
+                      <span className="tracking-wide text-xs">
+                        {isHindi ? opt.nameHi : isBengali ? opt.nameBn : opt.name}
+                      </span>
+                      <span className="text-[9px] text-ivory/50 font-normal">
+                        {opt.badge}
+                      </span>
+                    </div>
                   </div>
-                  {isSelected && <span className="text-xs">✓</span>}
+                  {isSelected && <span className="text-xs font-bold text-white">✓</span>}
                 </button>
               );
             })}
