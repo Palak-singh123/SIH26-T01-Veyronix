@@ -48,24 +48,24 @@ export default function FinalCTA({
         <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-light tracking-wide text-white leading-tight mb-6">
           {isHindi ? (
             <>
-              आपकी यात्रा शुरू होती है <span className="text-saffron font-medium">साधारण से परे</span>।
+              आपकी यात्रा शुरू होती है <span className="text-saffron font-medium">साधारण से परे</span>
             </>
           ) : isBengali ? (
             <>
-              আপনার যাত্রা শুরু হোক <span className="text-saffron font-medium">অসাধারণের খোঁজে</span>।
+              আপনার যাত্রা শুরু হোক <span className="text-saffron font-medium">অসাধারণের খোঁজে</span>
             </>
           ) : (
             <>
-              YOUR JOURNEY STARTS <span className="text-saffron font-medium">BEYOND THE OBVIOUS</span>.
+              YOUR JOURNEY STARTS <span className="text-saffron font-medium">BEYOND THE OBVIOUS</span>
             </>
           )}
         </h2>
         <p className="font-body text-ivory/70 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-light">
           {isHindi
-            ? 'एक यात्रा परिपथ चुनें। कारीगर परंपराओं को जानें। वह जीवित संस्कृति खोजें जो साधारण मानचित्रों में नहीं मिलती।'
+            ? 'एक यात्रा परिपथ चुनें, कारीगर परंपराओं को जानें, वह जीवित संस्कृति खोजें जो साधारण मानचित्रों में नहीं मिलती'
             : isBengali
-            ? 'একটি ভ্রমণ সার্কিট বেছে নিন। কারিগরদের ঐতিহ্য জানুন। মানচিত্রের বাইরের আসল ভারতকে আবিষ্কার করুন।'
-            : 'Choose a thematic circuit. Uncover an artisan tradition. Discover the living culture that maps don’t show.'}
+            ? 'একটি ভ্রমণ সার্কিট বেছে নিন, কারিগরদের ঐতিহ্য জানুন, মানচিত্রের বাইরের আসল ভারতকে আবিষ্কার করুন'
+            : 'Choose a thematic circuit, uncover an artisan tradition, discover the living culture that maps don’t show'}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button

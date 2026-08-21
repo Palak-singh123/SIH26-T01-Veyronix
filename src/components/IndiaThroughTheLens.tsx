@@ -28,8 +28,7 @@ export default function IndiaThroughTheLens({ onWatchStory, onSelectLocation }: 
             INDIA, <span className="text-saffron font-medium">THROUGH THE LENS</span>
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-            Where legendary filmmakers, authors, and documentarians discovered timeless visual poetry. 
-            Experience destinations made famous on the silver screen.
+            Where legendary filmmakers, authors, and documentarians discovered timeless visual poetry — experience destinations made famous on the silver screen
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

@@ -48,10 +48,10 @@ export default function WildBharat({ onSelectSanctuary }: WildBharatProps) {
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'तराई के विशाल घास के मैदानों में संरक्षित रॉयल बंगाल टाइगर से लेकर चंबल की बीहड़ घाटियों में स्वच्छंद विचरते दुर्लभ घड़ियालों और गंगा डॉल्फिन तक।'
+              ? 'तराई के विशाल घास के मैदानों में संरक्षित रॉयल बंगाल टाइगर से लेकर चंबल की बीहड़ घाटियों में स्वच्छंद विचरते दुर्लभ घड़ियाल और गंगा डॉल्फिन'
               : isBengali
-              ? 'তরাইয়ের ঘন বনভূমিতে রয়্যাল বেঙ্গল টাইগার থেকে চম্বল নদীর নির্মল উপত্যকায় বিরল ঘড়িয়াল ও গাঙ্গেয় ডলফিনের অবাধ বিচরণ।'
-              : 'From the tall Terai grasslands protecting Royal Bengal tigers to pristine river gorges sheltering critically endangered Gharials and Gangetic dolphins.'}
+              ? 'তরাইয়ের ঘন বনভূমিতে রয়্যাল বেঙ্গল টাইগার থেকে চম্বল নদীর নির্মল উপত্যকায় বিরল ঘড়িয়াল ও গাঙ্গেয় ডলফিনের অবাধ বিচরণ'
+              : 'From the tall Terai grasslands protecting Royal Bengal tigers to pristine river gorges sheltering critically endangered Gharials and Gangetic dolphins'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

@@ -47,10 +47,10 @@ export default function SmartTravelSection() {
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'सत्यापित आधिकारिक दिशा-निर्देश, 24x7 बहुभाषी पर्यटक हेल्पलाइन, क्षेत्रीय मौसम जानकारी और पंजीकृत स्थानीय सहकारी समितियां।'
+              ? 'सत्यापित आधिकारिक दिशा-निर्देश, 24x7 बहुभाषी पर्यटक हेल्पलाइन, क्षेत्रीय मौसम जानकारी और पंजीकृत स्थानीय सहकारी समितियां'
               : isBengali
-              ? 'যাচাইকৃত নির্দেশিকা, ২৪x৭ বহুভাষিক হেল্পলাইন, আঞ্চলিক আবহাওয়া এবং স্থানীয় ঐতিহ্য সমবায়।'
-              : 'Verified official guidelines, 24x7 multilingual tourist helplines, regional climate trends, and registered community travel cooperatives.'}
+              ? 'যাচাইকৃত নির্দেশিকা, ২৪x৭ বহুভাষিক হেল্পলাইন, আঞ্চলিক আবহাওয়া এবং স্থানীয় ঐতিহ্য সমবায়'
+              : 'Verified official guidelines, 24x7 multilingual tourist helplines, regional climate trends, and registered community travel cooperatives'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

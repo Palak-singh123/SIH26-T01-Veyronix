@@ -80,7 +80,7 @@ export default function Hero() {
     el?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const headlineWords = ['EXPLORE', 'INDIA.', 'EXPERIENCE', 'BHARAT.'];
+  const headlineWords = ['EXPLORE', 'INDIA', 'EXPERIENCE', 'BHARAT'];
 
   return (
     <section

@@ -45,10 +45,10 @@ export default function BeyondThePostcard({ onSelectDestination }: BeyondThePost
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'शांत घाटी जलप्रपात, प्राचीन भूगर्भीय गुफाएं और दुर्गम पहाड़ी किले जहाँ भीड़भाड़ वाले पर्यटन ने असली विरासत को धुंधला नहीं किया है।'
+              ? 'शांत घाटी जलप्रपात, प्राचीन भूगर्भीय गुफाएं और दुर्गम पहाड़ी किले जहाँ भीड़भाड़ वाले पर्यटन ने असली विरासत को धुंधला नहीं किया है'
               : isBengali
-              ? 'নির্জন জলপ্রপাত, পাহাড়ি গুহা ও প্রাচীন দুর্গ— যেখানে পর্যটনের ভিড়ে আসল ঐতিহ্য হারিয়ে যায়নি।'
-              : 'Secluded canyon waterfalls, subterranean river caves, and ancient hill fortresses where mass tourism has not eclipsed authentic heritage.'}
+              ? 'নির্জন জলপ্রপাত, পাহাড়ি গুহা ও প্রাচীন দুর্গ— যেখানে পর্যটনের ভিড়ে আসল ঐতিহ্য হারিয়ে যায়নি'
+              : 'Secluded canyon waterfalls, subterranean river caves, and ancient hill fortresses where mass tourism has not eclipsed authentic heritage'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

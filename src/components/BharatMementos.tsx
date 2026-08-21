@@ -46,10 +46,10 @@ export default function BharatMementos() {
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'साधारण स्मृति चिन्हों के स्थान पर पीढ़ियों से काम कर रहे कारीगरों द्वारा हस्तनिर्मित जीवित स्मृतियाँ अपने घर ले जाएं। प्रत्येक संस्मरण स्थानीय विरासत का समर्थन करता है और आपके सांस्कृतिक पासपोर्ट में स्टैम्प अनलॉक करता है।'
+              ? 'साधारण स्मृति चिन्हों के स्थान पर पीढ़ियों से काम कर रहे कारीगरों द्वारा हस्तनिर्मित जीवित स्मृतियाँ अपने घर ले जाएं — प्रत्येक संस्मरण स्थानीय विरासत का समर्थन करता है और आपके सांस्कृतिक पासपोर्ट में स्टैम्प अनलॉक करता है'
               : isBengali
-              ? 'সাধারণ স্মারকের বদলে প্রজন্মের পর প্রজন্ম ধরে তৈরি ঐতিহ্যবাহী হস্তশিল্প ঘরে নিয়ে যান। প্রতিটি স্মারক স্থানীয় ঐতিহ্য রক্ষা করে এবং আপনার পাসপোর্টে স্ট্যাম্প যুক্ত করে।'
-              : 'Take home living memories crafted by generational artisan families — not generic souvenirs. Every memento supports community heritage and unlocks stamps in your Cultural Passport.'}
+              ? 'সাধারণ স্মারকের বদলে প্রজন্মের পর প্রজন্ম ধরে তৈরি ঐতিহ্যবাহী হস্তশিল্প ঘরে নিয়ে যান — প্রতিটি স্মারক স্থানীয় ঐতিহ্য রক্ষা করে এবং আপনার পাসপোর্টে স্ট্যাম্প যুক্ত করে'
+              : 'Take home living memories crafted by generational artisan families — every memento supports community heritage and unlocks stamps in your Cultural Passport'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

@@ -47,15 +47,15 @@ export default function StoryIntro() {
             <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide leading-[1.15] mb-6 text-white">
               {isHindi ? (
                 <>
-                  भारत केवल एक <span className="text-saffron font-medium">पर्यटन स्थल</span> नहीं है।
+                  भारत केवल एक <span className="text-saffron font-medium">पर्यटन स्थल</span> नहीं है
                 </>
               ) : isBengali ? (
                 <>
-                  ভারত কেবল একটি <span className="text-saffron font-medium">গন্তব্যস্থল</span> নয়।
+                  ভারত কেবল একটি <span className="text-saffron font-medium">গন্তব্যস্থল</span> নয়
                 </>
               ) : (
                 <>
-                  INDIA IS NOT ONE <span className="text-saffron font-medium">DESTINATION</span>.
+                  INDIA IS NOT ONE <span className="text-saffron font-medium">DESTINATION</span>
                 </>
               )}
             </h2>
@@ -70,15 +70,15 @@ export default function StoryIntro() {
             <p className="font-heading text-lg sm:text-2xl md:text-3xl font-extralight text-ivory/60 tracking-wide">
               {isHindi ? (
                 <>
-                  यह <span className="text-gold font-light">सहस्रों जीवंत गाथाओं</span> का संगम है।
+                  यह <span className="text-gold font-light">सहस्रों जीवंत गाथाओं</span> का संगम है
                 </>
               ) : isBengali ? (
                 <>
-                  এটি <span className="text-gold font-light">হাজারো জীবন্ত কাহিনির</span> এক মহাগ্রন্থ।
+                  এটি <span className="text-gold font-light">হাজারো জীবন্ত কাহিনির</span> এক মহাগ্রন্থ
                 </>
               ) : (
                 <>
-                  It is <span className="text-gold font-light">thousands</span> of living stories.
+                  It is <span className="text-gold font-light">thousands</span> of living stories
                 </>
               )}
             </p>

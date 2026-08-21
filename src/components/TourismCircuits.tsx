@@ -52,10 +52,10 @@ export default function TourismCircuits({ onPlanWithAI, onSelectCity }: TourismC
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'एकाकी पर्यटन स्थलों से आगे बढ़कर पौराणिक आख्यानों, पावन स्थापत्य, स्वाधीनता संग्राम और वन्य अभयारण्यों को जोड़ने वाले समग्र यात्रा परिपथों का अनुभव करें।'
+              ? 'एकाकी पर्यटन स्थलों से आगे बढ़कर पौराणिक आख्यानों, पावन स्थापत्य, स्वाधीनता संग्राम और वन्य अभयारण्यों को जोड़ने वाले समग्र यात्रा परिपथों का अनुभव करें'
               : isBengali
-              ? 'একক গন্তব্যের বাইরে পৌরাণিক ইতিহাস, স্থাপত্য এবং বন্য অভয়ারণ্যের সমন্বয়ে গঠিত সমগ্র ভ্রমণ সার্কিট অন্বেষণ করুন।'
-              : 'Travel beyond isolated tourist spots. Follow thematic pathways across mythology, sacred architecture, independence struggles, and living sanctuaries.'}
+              ? 'একক গন্তব্যের বাইরে পৌরাণিক ইতিহাস, স্থাপত্য এবং বন্য অভয়ারণ্যের সমন্বয়ে গঠিত সমগ্র ভ্রমণ সার্কিট অন্বেষণ করুন'
+              : 'Travel beyond isolated tourist spots — follow thematic pathways across mythology, sacred architecture, independence struggles, and living sanctuaries'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

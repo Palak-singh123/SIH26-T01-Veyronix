@@ -45,10 +45,10 @@ export default function CulturalShadows() {
           </h2>
           <p className="font-body text-ivory/70 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'हर प्रसिद्ध स्मारक के पीछे एक जीवित सांस्कृतिक संसार छुपा है। भारत भ्रमण आपको केवल इमारतों तक नहीं ले जाता, बल्कि उनके पीछे बसे लोगों, दुर्लभ शिल्पों और बिसरा दी गई गाथाओं को उजागर करता है।'
+              ? 'हर प्रसिद्ध स्मारक के पीछे एक जीवित सांस्कृतिक संसार छुपा है — भारत भ्रमण आपको केवल इमारतों तक नहीं ले जाता, बल्कि उनके पीछे बसे लोगों, दुर्लभ शिल्पों और बिसरा दी गई गाथाओं को उजागर करता है'
               : isBengali
-              ? 'প্রতিটি বিখ্যাত স্মৃতিস্তম্ভের আড়ালে লুকিয়ে থাকে এক জীবন্ত সাংস্কৃতিক জগৎ। ভারত ভ্রমণ কেবল দর্শনীয় স্থান দেখায় না, বরং তার পেছনের কারিগর, লুপ্ত হস্তশিল্প এবং স্মৃতিকথা উন্মোচন করে।'
-              : 'Every famous landmark has a living cultural layer hiding just beyond its walls. Bharat Bharman does not just guide you to the monument — it reveals the living people, endangered crafts, and forgotten narratives behind it.'}
+              ? 'প্রতিটি বিখ্যাত স্মৃতিস্তম্ভের আড়ালে লুকিয়ে থাকে এক জীবন্ত সাংস্কৃতিক জগৎ — ভারত ভ্রমণ কেবল দর্শনীয় স্থান দেখায় না, বরং তার পেছনের কারিগর, লুপ্ত হস্তশিল্প এবং স্মৃতিকথা উন্মোচন করে'
+              : 'Every famous landmark has a living cultural layer hiding just beyond its walls — Bharat Bharman does not just guide you to the monument, it reveals the living people, endangered crafts, and forgotten narratives behind it'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

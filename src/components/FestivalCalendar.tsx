@@ -57,10 +57,10 @@ export default function FestivalCalendar({ onSelectFestival }: FestivalCalendarP
           </h2>
           <p className="font-body text-ivory/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             {isHindi
-              ? 'जैसलमेर के मरु महोत्सव की चांदनी से लेकर देव दीपावली के घाटों तक, भारत को उसके जीवंत उत्सवों और परंपराओं के माध्यम से जानें।'
+              ? 'जैसलमेर के मरु महोत्सव की चांदनी से लेकर देव दीपावली के घाटों तक, भारत को उसके जीवंत उत्सवों और परंपराओं के माध्यम से जानें'
               : isBengali
-              ? 'মরু উৎসবের সুরের মূর্ছনা থেকে দেব দীপাবলির আলোকিত নদীঘাট— ভারতের জীবন্ত উৎসবের মাধ্যমে অনুভব করুন এক অনন্য দেশ।'
-              : 'From the full-moon desert melodies of Jaisalmer to the sacred glowing riverbanks of Dev Deepawali, explore India through its living festive seasons.'}
+              ? 'জয়সলমীরের মরু উৎসব থেকে বারাণসীর দেব দীপাবলি — ভারতের জীবন্ত উৎসবের রূপ আবিষ্কার করুন'
+              : 'From the desert dunes of Jaisalmer to the million oil lamps of Dev Deepawali in Kashi, experience India through its living celebrations'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>

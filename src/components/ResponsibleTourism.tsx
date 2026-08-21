@@ -64,24 +64,24 @@ export default function ResponsibleTourism() {
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-light text-white tracking-wide mb-4">
             {isHindi ? (
               <>
-                गहराई में अनुभव करें। <span className="text-green font-medium">प्रकृति का सम्मान करें।</span>
+                गहराई में अनुभव करें <span className="text-green font-medium">प्रकृति का सम्मान करें</span>
               </>
             ) : isBengali ? (
               <>
-                গভীরভাবে ভ্রমণ করুন। <span className="text-green font-medium">ঐতিহ্য রক্ষা করুন।</span>
+                গভীরভাবে ভ্রমণ করুন <span className="text-green font-medium">ঐতিহ্য রক্ষা করুন</span>
               </>
             ) : (
               <>
-                TRAVEL DEEPER. <span className="text-green font-medium">LEAVE A LIGHTER FOOTPRINT.</span>
+                TRAVEL DEEPER <span className="text-green font-medium">LEAVE A LIGHTER FOOTPRINT</span>
               </>
             )}
           </h2>
           <p className="font-body text-xs sm:text-sm text-ivory/60 max-w-xl mx-auto leading-relaxed">
             {isHindi
-              ? 'सच्ची सांस्कृतिक खोज का अर्थ है उन लोगों, परंपराओं और पर्यावरण का सम्मान करना जो भारत को कालजयी बनाते हैं।'
+              ? 'सच्ची सांस्कृतिक खोज का अर्थ है उन लोगों, परंपराओं और पर्यावरण का सम्मान करना जो भारत को कालजयी बनाते हैं'
               : isBengali
-              ? 'প্রকৃত সাংস্কৃতিক আবিষ্কার মানে সেই মানুষ, ঐতিহ্য এবং পরিবেশের প্রতি শ্রদ্ধা জানানো যা ভারতকে অনন্য করে তুলেছে।'
-              : 'True cultural discovery means honoring the people, traditions, and environments that make Bharat timeless.'}
+              ? 'প্রকৃত সাংস্কৃতিক আবিষ্কার মানে সেই মানুষ, ঐতিহ্য এবং পরিবেশের প্রতি শ্রদ্ধা জানানো যা ভারতকে অনন্য করে তুলেছে'
+              : 'True cultural discovery means honoring the people, traditions, and environments that make Bharat timeless'}
           </p>
           <div className="accent-line-tricolor mx-auto mt-6" />
         </motion.div>
