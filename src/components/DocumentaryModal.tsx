@@ -77,13 +77,13 @@ export default function DocumentaryModal({
   const doc = sampleDocumentaries[storyId] || sampleDocumentaries['varanasi'];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-dark/90 backdrop-blur-2xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-4xl max-h-[90vh] bg-navy-dark border border-ivory/15 rounded-sm shadow-2xl flex flex-col overflow-hidden"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-4xl max-h-[90vh] bg-[#031527] border-2 border-gold/40 rounded-lg shadow-2xl flex flex-col overflow-hidden text-ivory my-auto"
       >
         {/* Cinema Player Screen Container */}
         <div className="relative aspect-[16/9] w-full bg-black overflow-hidden shrink-0">
@@ -103,7 +103,7 @@ export default function DocumentaryModal({
             </span>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-navy-dark/90 border border-ivory/20 flex items-center justify-center text-white"
+              className="w-8 h-8 rounded-full bg-navy-dark/90 border border-ivory/20 flex items-center justify-center text-white hover:bg-saffron transition-colors"
             >
               ✕
             </button>
@@ -113,7 +113,7 @@ export default function DocumentaryModal({
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               onClick={() => watchStory(doc.title)}
-              className="w-16 h-16 rounded-full bg-saffron text-white flex items-center justify-center pl-1 shadow-2xl hover:scale-110 transition-transform"
+              className="w-16 h-16 rounded-full bg-saffron text-white flex items-center justify-center pl-1 shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
@@ -169,7 +169,7 @@ export default function DocumentaryModal({
             </span>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

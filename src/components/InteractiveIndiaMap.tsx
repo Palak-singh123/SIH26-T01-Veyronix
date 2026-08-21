@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { allStatesAndUTs, StateUTData } from '@/data/allStatesData';
 import { nationalParks, NationalPark } from '@/data/nationalParksData';
 import { heritageDestinations, HeritageDestination } from '@/data/tourismData';
 
 interface InteractiveIndiaMapProps {
+  selectedStateId?: string;
+  onSelectState?: (stateId: string) => void;
   onSelectDestination?: (destId: string) => void;
   onSelectPark?: (parkId: string) => void;
   onRevealShadow?: (destName: string) => void;
@@ -263,6 +266,8 @@ const parkMarkers = [
 ];
 
 export default function InteractiveIndiaMap({
+  selectedStateId: controlledStateId,
+  onSelectState,
   onSelectDestination,
   onSelectPark,
   onRevealShadow,
@@ -270,8 +275,15 @@ export default function InteractiveIndiaMap({
   const { t } = useLanguage();
   const [mapMode, setMapMode] = useState<MapMode>('destinations');
   const [selectedRegion, setSelectedRegion] = useState<string>('ALL');
-  const [selectedStateId, setSelectedStateId] = useState<string>('rajasthan');
+  const [internalStateId, setInternalStateId] = useState<string>('rajasthan');
   const [hoveredState, setHoveredState] = useState<GeoStateNode | null>(null);
+
+  const selectedStateId = controlledStateId || internalStateId;
+
+  const handleStateChange = (id: string) => {
+    setInternalStateId(id);
+    if (onSelectState) onSelectState(id);
+  };
 
   // Active state data resolution
   const activeGeoNode = geoStateNodes.find((s) => s.id === selectedStateId) || geoStateNodes[6];
@@ -318,7 +330,7 @@ export default function InteractiveIndiaMap({
             </span>
             <select
               value={selectedStateId}
-              onChange={(e) => setSelectedStateId(e.target.value)}
+              onChange={(e) => handleStateChange(e.target.value)}
               className="px-3 py-1.5 bg-navy-dark border border-ivory/20 rounded text-xs text-white font-heading font-medium focus:outline-none focus:border-saffron"
             >
               {allStatesAndUTs.map((s) => (
@@ -467,7 +479,7 @@ export default function InteractiveIndiaMap({
                         className="cursor-pointer transition-all duration-300"
                         onMouseEnter={() => setHoveredState(state)}
                         onMouseLeave={() => setHoveredState(null)}
-                        onClick={() => setSelectedStateId(state.id)}
+                        onClick={() => handleStateChange(state.id)}
                       />
 
                       {/* State Name Text */}
@@ -493,26 +505,53 @@ export default function InteractiveIndiaMap({
                     <g
                       key={m.id}
                       className="cursor-pointer group"
-                      onClick={() => onSelectDestination && onSelectDestination(m.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSelectDestination) onSelectDestination(m.id);
+                      }}
                     >
+                      {/* Generous touch/click hit area */}
+                      <circle cx={m.cx} cy={m.cy} r="14" fill="transparent" className="cursor-pointer" />
+                      {/* Pulsing halo */}
                       <circle
                         cx={m.cx}
                         cy={m.cy}
-                        r="4.5"
+                        r="8"
+                        fill="#F28C28"
+                        opacity="0.25"
+                        className="animate-ping origin-center"
+                      />
+                      {/* Main Pin */}
+                      <circle
+                        cx={m.cx}
+                        cy={m.cy}
+                        r="5"
                         fill="#F28C28"
                         stroke="#FFFFFF"
                         strokeWidth="1.5"
                         filter="url(#stateGlow)"
+                        className="group-hover:scale-125 transition-transform origin-center"
+                      />
+                      <rect
+                        x={m.cx - 28}
+                        y={m.cy - 16}
+                        width="56"
+                        height="10"
+                        rx="3"
+                        fill="rgba(3, 21, 39, 0.85)"
+                        stroke="#F28C28"
+                        strokeWidth="0.5"
+                        className="pointer-events-none opacity-90 group-hover:opacity-100"
                       />
                       <text
                         x={m.cx}
-                        y={m.cy - 7}
+                        y={m.cy - 9}
                         textAnchor="middle"
                         fill="#FFFFFF"
-                        fontSize="6.5"
+                        fontSize="6"
                         fontFamily="var(--font-heading)"
                         fontWeight="bold"
-                        className="select-none uppercase drop-shadow"
+                        className="select-none uppercase pointer-events-none drop-shadow"
                       >
                         📍 {m.name.split(' ')[0]}
                       </text>
@@ -525,27 +564,49 @@ export default function InteractiveIndiaMap({
                     <g
                       key={p.id}
                       className="cursor-pointer group"
-                      onClick={() => onSelectPark && onSelectPark(p.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSelectPark) onSelectPark(p.id);
+                      }}
                     >
+                      <circle cx={p.cx} cy={p.cy} r="14" fill="transparent" className="cursor-pointer" />
                       <circle
                         cx={p.cx}
                         cy={p.cy}
-                        r="5"
+                        r="8"
+                        fill="#168447"
+                        opacity="0.25"
+                        className="animate-ping origin-center"
+                      />
+                      <circle
+                        cx={p.cx}
+                        cy={p.cy}
+                        r="5.5"
                         fill="#168447"
                         stroke="#FFFFFF"
                         strokeWidth="1.5"
                         filter="url(#stateGlow)"
-                        className="animate-pulse"
+                      />
+                      <rect
+                        x={p.cx - 30}
+                        y={p.cy - 16}
+                        width="60"
+                        height="10"
+                        rx="3"
+                        fill="rgba(3, 21, 39, 0.85)"
+                        stroke="#168447"
+                        strokeWidth="0.5"
+                        className="pointer-events-none"
                       />
                       <text
                         x={p.cx}
-                        y={p.cy - 7}
+                        y={p.cy - 9}
                         textAnchor="middle"
                         fill="#20A55B"
-                        fontSize="6.5"
+                        fontSize="6"
                         fontFamily="var(--font-heading)"
                         fontWeight="bold"
-                        className="select-none uppercase"
+                        className="select-none uppercase pointer-events-none"
                       >
                         🐾 {p.name.split(' ')[0]}
                       </text>
@@ -558,25 +619,44 @@ export default function InteractiveIndiaMap({
                     <g
                       key={m.id}
                       className="cursor-pointer group"
-                      onClick={() => onRevealShadow && onRevealShadow(m.name)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSelectDestination) {
+                          onSelectDestination(m.id);
+                        } else if (onRevealShadow) {
+                          onRevealShadow(m.name);
+                        }
+                      }}
                     >
+                      <circle cx={m.cx} cy={m.cy} r="14" fill="transparent" className="cursor-pointer" />
                       <circle
                         cx={m.cx}
                         cy={m.cy}
-                        r="5"
+                        r="5.5"
                         fill="#C89B3C"
                         stroke="#FFFFFF"
                         strokeWidth="1.5"
                       />
+                      <rect
+                        x={m.cx - 28}
+                        y={m.cy - 16}
+                        width="56"
+                        height="10"
+                        rx="3"
+                        fill="rgba(3, 21, 39, 0.85)"
+                        stroke="#C89B3C"
+                        strokeWidth="0.5"
+                        className="pointer-events-none"
+                      />
                       <text
                         x={m.cx}
-                        y={m.cy - 7}
+                        y={m.cy - 9}
                         textAnchor="middle"
                         fill="#DFB55B"
-                        fontSize="6.5"
+                        fontSize="6"
                         fontFamily="var(--font-heading)"
                         fontWeight="bold"
-                        className="select-none uppercase"
+                        className="select-none uppercase pointer-events-none"
                       >
                         ✦ {m.name.split(' ')[0]}
                       </text>
@@ -588,7 +668,7 @@ export default function InteractiveIndiaMap({
               <div className="absolute bottom-2 left-2 right-2 flex flex-wrap items-center justify-between text-[8px] sm:text-[9px] uppercase font-heading bg-navy-dark/95 px-3 py-1.5 rounded border border-ivory/10">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1 text-saffron font-medium">
-                    <span className="w-2 h-2 rounded-full bg-saffron" /> Destination
+                    <span className="w-2 h-2 rounded-full bg-saffron" /> Destination (Click to Open Gallery)
                   </span>
                   <span className="flex items-center gap-1 text-green font-medium">
                     <span className="w-2 h-2 rounded-full bg-green" /> National Park
@@ -597,7 +677,7 @@ export default function InteractiveIndiaMap({
                     <span className="w-2 h-2 rounded-full bg-gold" /> Cultural Shadow
                   </span>
                 </div>
-                <span className="text-ivory/50">Click any state to explore</span>
+                <span className="text-ivory/50">Click any place pin or state</span>
               </div>
             </div>
           </div>
@@ -635,29 +715,53 @@ export default function InteractiveIndiaMap({
                   {activeStateDetails.culturalHighlight}
                 </p>
 
+                {/* Primary CTA: Open Full Gallery for Selected State */}
+                <div className="pt-1">
+                  <button
+                    onClick={() => {
+                      if (onSelectDestination) {
+                        onSelectDestination(activeStateDetails.name.toLowerCase());
+                      }
+                    }}
+                    className="w-full btn-primary text-xs !py-3.5 justify-center shadow-xl flex items-center gap-2.5 cursor-pointer transition-all hover:scale-[1.01] active:scale-95"
+                  >
+                    <svg className="w-4 h-4 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="font-heading uppercase tracking-wider font-semibold">
+                      Open {activeStateDetails.name} Photo Gallery & Famous Places ({activeStateDetails.famousFor.length}+ Places) →
+                    </span>
+                  </button>
+                </div>
+
                 {/* Major Signature Destinations for the Selected State */}
                 <div className="pt-2">
-                  <span className="text-[10px] uppercase font-heading text-gold tracking-wider block mb-2 font-semibold">
-                    Curated Destinations in {activeStateDetails.name}:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] uppercase font-heading text-gold tracking-wider font-semibold">
+                      Curated Destinations in {activeStateDetails.name}:
+                    </span>
+                    <span className="text-[9px] text-ivory/50">Click place to view gallery</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {activeStateDetails.famousFor.map((dest) => (
                       <button
                         key={dest}
                         onClick={() => {
-                          const matched = heritageDestinations.find((d) =>
-                            dest.toLowerCase().includes(d.name.toLowerCase()) ||
-                            d.name.toLowerCase().includes(dest.toLowerCase()) ||
-                            dest.toLowerCase().includes(d.location.toLowerCase()) ||
-                            d.location.toLowerCase().includes(dest.toLowerCase())
-                          );
                           if (onSelectDestination) {
-                            onSelectDestination(matched ? matched.id : dest.toLowerCase());
+                            onSelectDestination(dest.toLowerCase());
                           }
                         }}
-                        className="px-2.5 py-1 rounded bg-navy-dark text-[10px] font-heading text-ivory/80 hover:text-saffron hover:border-saffron/40 border border-ivory/10 transition-colors"
+                        className="px-3 py-2.5 rounded bg-navy-dark text-[11px] font-heading text-ivory/90 hover:text-white hover:bg-saffron/20 border border-ivory/15 hover:border-saffron/60 transition-all flex items-center justify-between group shadow-sm text-left cursor-pointer active:scale-95"
                       >
-                        📍 {dest}
+                        <span className="truncate flex items-center gap-1.5">
+                          <span className="text-saffron">📍</span> {dest}
+                        </span>
+                        <span className="text-[10px] text-gold group-hover:text-saffron group-hover:translate-x-0.5 transition-transform shrink-0 flex items-center gap-1">
+                          <svg className="w-3 h-3 text-gold group-hover:text-saffron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span>View →</span>
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -670,8 +774,14 @@ export default function InteractiveIndiaMap({
                       ✦ Cultural Shadow: {activeGeoNode.shadowTitle}
                     </span>
                     <button
-                      onClick={() => onRevealShadow && onRevealShadow(activeStateDetails.name)}
-                      className="text-[9px] text-saffron underline font-heading font-semibold"
+                      onClick={() => {
+                        if (onSelectDestination) {
+                          onSelectDestination(activeStateDetails.name.toLowerCase());
+                        } else if (onRevealShadow) {
+                          onRevealShadow(activeStateDetails.name);
+                        }
+                      }}
+                      className="text-[9px] text-saffron underline font-heading font-semibold cursor-pointer hover:text-white"
                     >
                       Reveal Story →
                     </button>
@@ -679,6 +789,23 @@ export default function InteractiveIndiaMap({
                   <p className="text-xs text-ivory/75 font-body leading-relaxed">
                     {activeGeoNode.shadowDescription}
                   </p>
+                </div>
+
+                {/* State Catalog Page Direct Route Link */}
+                <div className="pt-1 flex items-center justify-between border-t border-ivory/10 text-xs">
+                  <Link
+                    href={`/states/${activeStateDetails.id}`}
+                    className="text-gold hover:text-white font-heading uppercase text-[10px] tracking-wider underline flex items-center gap-1"
+                  >
+                    <span>🏛️</span>
+                    <span>Explore Full {activeStateDetails.name} Factsheet & Parks →</span>
+                  </Link>
+                  <Link
+                    href="/destinations"
+                    className="text-ivory/50 hover:text-white font-heading uppercase text-[9px]"
+                  >
+                    All Destinations
+                  </Link>
                 </div>
               </motion.div>
             </AnimatePresence>

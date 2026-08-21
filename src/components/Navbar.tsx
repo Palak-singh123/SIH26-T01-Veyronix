@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import LanguageSelector from './LanguageSelector';
 import ThemeSelector from './ThemeSelector';
@@ -28,48 +28,98 @@ export default function Navbar({
   const { totalExperiencesCount } = usePassport();
   const { totalBookmarksCount } = useBookmarks();
   const [isOpen, setIsOpen] = useState(false);
-  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
-  const navItems = [
-    { label: t.navDestinations, action: onOpenMegaMenu, isMega: true },
-    { label: t.navExperiences, href: '#explore' },
-    { label: t.navPlan, href: '#gis-map' },
-    { label: t.navFestivals, href: '#festival-calendar' },
-    { label: t.navCulturalShadows, href: '#cultural-shadows' },
+  // Track scroll to toggle navbar background
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Track which section is currently in view
+  useEffect(() => {
+    const sectionIds = [
+      'discover', 'explore', 'cultural-shadows', 'circuits',
+      'documentaries', 'festivals', 'wildlife', 'hidden-gems',
+    ];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const smoothScroll = useCallback((href: string, pageRoute?: string) => {
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname !== '/' && pageRoute) {
+        window.location.href = pageRoute;
+        return;
+      }
+      if (href === '#') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const el = document.querySelector(href);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (pageRoute) {
+          window.location.href = pageRoute;
+        }
+      }
+    }
+    setIsOpen(false);
+  }, []);
+
+  // Standard Navigation Links matching requirements
+  const navLinks = [
+    { label: 'Home', href: '#', pageRoute: '/', icon: '🏠' },
+    { label: 'Destinations', href: '#explore', pageRoute: '/destinations', icon: '🏛️', isMega: true },
+    { label: 'Experiences', href: '#explore', pageRoute: '/experiences', icon: '🗺️' },
+    { label: 'Plan', href: '#gis-map', pageRoute: '/plan', icon: '🧭' },
+    { label: 'Festivals', href: '#festivals', pageRoute: '/festivals', icon: '🎭' },
+    { label: 'Shadows', href: '#cultural-shadows', pageRoute: '/cultural-shadows', icon: '✦' },
+    { label: 'Stories', href: '#documentaries', pageRoute: '/stories', icon: '🎬' },
+    { label: 'Guides', href: '#guides', pageRoute: '/guides', icon: '👥' },
   ];
-
-  const navBg = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(4, 26, 49, 0.4)', 'rgba(4, 26, 49, 0.96)']
-  );
-  const navBlur = useTransform(scrollY, [0, 100], ['blur(8px)', 'blur(20px)']);
-  const navPadding = useTransform(scrollY, [0, 100], ['16px', '10px']);
-  const logoScale = useTransform(scrollY, [0, 100], [1, 0.88]);
-  const borderOpacity = useTransform(scrollY, [0, 100], [0.08, 0.16]);
-  const borderColor = useTransform(borderOpacity, (v) => `rgba(255, 248, 236, ${v})`);
 
   return (
     <>
-      <motion.nav
-        style={{
-          backgroundColor: navBg,
-          backdropFilter: navBlur,
-          WebkitBackdropFilter: navBlur,
-          paddingTop: navPadding,
-          paddingBottom: navPadding,
-          borderBottomColor: borderColor,
-        }}
-        className="fixed top-0 left-0 right-0 z-50 border-b transition-colors"
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out border-b ${
+          scrolled
+            ? 'bg-[#031527]/85 backdrop-blur-xl border-ivory/12 shadow-lg shadow-black/20'
+            : 'bg-transparent backdrop-blur-sm border-transparent'
+        }`}
+        style={{ paddingTop: scrolled ? '8px' : '14px', paddingBottom: scrolled ? '8px' : '14px' }}
       >
-        <div className="max-w-[1440px] mx-auto px-6 flex items-center justify-between">
-          {/* ── Official Brand Logo + Wordmark ─────────────── */}
-          <motion.a
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
+          {/* ── Brand Logo + Wordmark ─────────────── */}
+          <a
             href="#"
-            style={{ scale: logoScale }}
-            className="flex items-center gap-3.5 group"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-3 group shrink-0"
           >
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-saffron/50 shadow-md bg-navy-dark shrink-0">
+            <div
+              className={`relative rounded-full overflow-hidden border border-saffron/50 shadow-md bg-navy-dark shrink-0 transition-all duration-300 ${
+                scrolled ? 'w-9 h-9' : 'w-10 h-10 sm:w-11 sm:h-11'
+              }`}
+            >
               <Image
                 src="/images/logo.png"
                 alt="Bharat Bharman Official Logo"
@@ -80,52 +130,81 @@ export default function Navbar({
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-heading text-lg sm:text-xl tracking-[0.14em] font-light uppercase text-ivory leading-tight">
+              <span
+                className={`font-heading tracking-[0.14em] font-light uppercase text-ivory leading-tight transition-all duration-300 ${
+                  scrolled ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'
+                }`}
+              >
                 <span className="font-semibold text-white">BHARAT</span>{' '}
                 <span className="text-saffron font-semibold">BHARMAN</span>
               </span>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-ivory/60 uppercase font-heading">
+              <span
+                className={`tracking-[0.25em] text-ivory/60 uppercase font-heading transition-all duration-300 ${
+                  scrolled ? 'text-[7px] sm:text-[8px]' : 'text-[8px] sm:text-[9px]'
+                }`}
+              >
                 {t.tagline}
               </span>
             </div>
-          </motion.a>
+          </a>
 
-          {/* ── Center National Navigation Items ────────────── */}
-          <div className="hidden xl:flex items-center gap-6 2xl:gap-8">
-            {navItems.map((item) => (
-              <div key={item.label}>
-                {item.isMega ? (
+          {/* ── Center Navigation Links (Desktop) ────────────── */}
+          <div className="hidden xl:flex items-center gap-1">
+            {navLinks.map((item) => {
+              const isActive =
+                item.href === '#'
+                  ? !scrolled && activeSection === ''
+                  : activeSection === item.href.replace('#', '');
+
+              if (item.isMega) {
+                return (
                   <button
-                    onClick={item.action}
-                    className="flex items-center gap-1 text-xs tracking-[0.12em] uppercase font-heading text-ivory/90 hover:text-saffron transition-colors font-medium group"
+                    key={item.label}
+                    onClick={onOpenMegaMenu}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] tracking-[0.1em] uppercase font-heading transition-all duration-200 ${
+                      isActive
+                        ? 'bg-saffron/15 text-saffron font-semibold border border-saffron/30'
+                        : 'text-ivory/75 hover:text-white hover:bg-white/5 border border-transparent'
+                    }`}
                   >
+                    <span className="text-xs">{item.icon}</span>
                     <span>{item.label}</span>
-                    <span className="text-[10px] text-saffron group-hover:rotate-180 transition-transform">
-                      ▾
-                    </span>
+                    <span className="text-[8px] text-saffron group-hover:rotate-180 transition-transform">▾</span>
                   </button>
-                ) : (
-                  <a
-                    href={item.href}
-                    className="text-xs tracking-[0.12em] uppercase font-heading text-ivory/80 hover:text-saffron transition-colors"
-                  >
-                    {item.label}
-                  </a>
-                )}
-              </div>
-            ))}
+                );
+              }
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.pageRoute || item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    smoothScroll(item.href, item.pageRoute);
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] tracking-[0.1em] uppercase font-heading transition-all duration-200 ${
+                    isActive
+                      ? 'bg-saffron/15 text-saffron font-semibold border border-saffron/30'
+                      : 'text-ivory/75 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}
+                >
+                  <span className="text-xs">{item.icon}</span>
+                  <span>{item.label}</span>
+                </a>
+              );
+            })}
           </div>
 
-          {/* ── Right Actions: Language, Search, Bookmarks, Passport, AI ── */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* ── Right Actions: Search, Language, Bookmarks, Passport, AI ── */}
+          <div className="hidden lg:flex items-center gap-2.5">
             {/* Search Trigger */}
             <button
               onClick={onOpenSearch}
-              className="p-2 rounded-sm bg-navy-card/80 border border-ivory/10 hover:border-saffron/40 text-ivory/70 hover:text-white transition-colors"
+              className="p-2 rounded-full bg-white/5 border border-ivory/10 hover:border-saffron/40 hover:bg-white/10 text-ivory/70 hover:text-white transition-all"
               title="Global Search (Ctrl/Cmd + K)"
               aria-label="Search"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
               </svg>
@@ -140,12 +219,12 @@ export default function Navbar({
             {/* My Bharat Saved Bookmarks */}
             <button
               onClick={onOpenBookmarks}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm bg-navy-card/80 border border-ivory/10 hover:border-gold/50 text-xs font-heading uppercase text-ivory/80 hover:text-gold transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-ivory/10 hover:border-gold/50 text-xs font-heading uppercase text-ivory/80 hover:text-gold transition-all"
               title="My Bharat Saved Journeys"
             >
               <span>🔖</span>
               <span className="hidden 2xl:inline">Saved</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-gold/20 text-gold text-[9px] font-bold">
+              <span className="px-1.5 py-0.5 rounded-full bg-gold/20 text-gold text-[9px] font-bold min-w-[18px] text-center">
                 {totalBookmarksCount}
               </span>
             </button>
@@ -153,12 +232,12 @@ export default function Navbar({
             {/* Cultural Passport Badge */}
             <button
               onClick={onOpenPassport}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm bg-navy-card/80 border border-gold/30 hover:border-gold text-xs font-heading uppercase text-gold transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-gold/30 hover:border-gold text-xs font-heading uppercase text-gold transition-all"
               title="My Cultural Passport"
             >
               <span>🛂</span>
               <span className="hidden 2xl:inline">{t.myPassport}</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-gold/20 text-gold text-[9px] font-bold">
+              <span className="px-1.5 py-0.5 rounded-full bg-gold/20 text-gold text-[9px] font-bold min-w-[18px] text-center">
                 {totalExperiencesCount}
               </span>
             </button>
@@ -166,7 +245,7 @@ export default function Navbar({
             {/* AI Guide CTA */}
             <button
               onClick={onOpenAIPlanner}
-              className="btn-primary text-[10px] !py-2 !px-3.5 flex items-center gap-1.5"
+              className="btn-primary text-[10px] !py-2 !px-3.5 !rounded-full flex items-center gap-1.5"
             >
               <span>🤖</span>
               <span>{t.planWithAI}</span>
@@ -176,7 +255,7 @@ export default function Navbar({
           {/* ── Mobile Menu Trigger ────────────────────────── */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2"
+            className="lg:hidden flex flex-col gap-1.5 p-2 z-[60]"
             aria-label="Toggle menu"
           >
             <motion.span
@@ -193,7 +272,7 @@ export default function Navbar({
             />
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* ── Mobile Drawer ─────────────────────────────────── */}
       <AnimatePresence>
@@ -202,7 +281,7 @@ export default function Navbar({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-navy-dark/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-5 px-6"
+            className="fixed inset-0 z-[55] bg-[#020d1a]/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-4 px-6 overflow-y-auto"
           >
             <div className="relative w-14 h-14 rounded-full overflow-hidden border border-saffron/50 mb-1">
               <Image src="/images/logo.png" alt="Logo" fill sizes="56px" className="object-cover" />
@@ -212,6 +291,7 @@ export default function Navbar({
             </span>
             <div className="accent-line-tricolor my-1" />
 
+            {/* Mobile Utility Row */}
             <div className="flex flex-wrap items-center justify-center gap-2.5 my-2">
               <LanguageSelector />
               <ThemeSelector />
@@ -220,7 +300,7 @@ export default function Navbar({
                   setIsOpen(false);
                   if (onOpenPassport) onOpenPassport();
                 }}
-                className="px-3 py-1.5 rounded bg-navy-card border border-gold/30 text-xs text-gold font-heading"
+                className="px-3 py-1.5 rounded-full bg-navy-card border border-gold/30 text-xs text-gold font-heading"
               >
                 🛂 Passport ({totalExperiencesCount})
               </button>
@@ -229,45 +309,58 @@ export default function Navbar({
                   setIsOpen(false);
                   if (onOpenBookmarks) onOpenBookmarks();
                 }}
-                className="px-3 py-1.5 rounded bg-navy-card border border-ivory/10 text-xs text-ivory font-heading"
+                className="px-3 py-1.5 rounded-full bg-navy-card border border-ivory/10 text-xs text-ivory font-heading"
               >
                 🔖 ({totalBookmarksCount})
               </button>
             </div>
 
-            <div className="flex flex-col items-center gap-3">
+            {/* Mobile Navigation Links */}
+            <div className="flex flex-col items-center gap-3 w-full max-w-sm">
+              {/* Mega Menu Button */}
               <button
                 onClick={() => {
                   setIsOpen(false);
                   if (onOpenMegaMenu) onOpenMegaMenu();
                 }}
-                className="text-base font-heading tracking-[0.15em] uppercase text-saffron font-semibold"
+                className="text-base font-heading tracking-[0.15em] uppercase text-saffron font-semibold flex items-center gap-2"
               >
-                Explore Destinations Mega Menu ▾
+                🗺️ Explore Destinations ▾
               </button>
-              {navItems
+
+              {/* Section Links */}
+              {navLinks
                 .filter((item) => !item.isMega)
                 .map((item, i) => (
                   <motion.a
                     key={item.label}
-                    href={item.href}
+                    href={item.pageRoute || item.href}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04 }}
-                    onClick={() => setIsOpen(false)}
-                    className="text-base font-heading tracking-[0.15em] uppercase text-ivory hover:text-saffron transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      smoothScroll(item.href, item.pageRoute);
+                    }}
+                    className={`text-base font-heading tracking-[0.15em] uppercase transition-colors flex items-center gap-2.5 ${
+                      activeSection === item.href.replace('#', '')
+                        ? 'text-saffron font-semibold'
+                        : 'text-ivory hover:text-saffron'
+                    }`}
                   >
-                    {item.label}
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
                   </motion.a>
                 ))}
             </div>
 
+            {/* Mobile AI CTA */}
             <button
               onClick={() => {
                 setIsOpen(false);
                 if (onOpenAIPlanner) onOpenAIPlanner();
               }}
-              className="btn-primary mt-3 text-xs"
+              className="btn-primary mt-3 text-xs !rounded-full"
             >
               🤖 {t.planWithAI}
             </button>

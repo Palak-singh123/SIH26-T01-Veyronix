@@ -128,7 +128,13 @@ export function PassportProvider({ children }: { children: React.ReactNode }) {
   };
 
   const collectMemento = (id: string) => {
-    if (!stats.mementosCollected.includes(id)) {
+    if (stats.mementosCollected.includes(id)) {
+      const updated = {
+        ...stats,
+        mementosCollected: stats.mementosCollected.filter((mId) => mId !== id),
+      };
+      saveStats(updated);
+    } else {
       const updated = {
         ...stats,
         mementosCollected: [...stats.mementosCollected, id],

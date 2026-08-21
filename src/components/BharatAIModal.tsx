@@ -17,23 +17,23 @@ interface BharatAIModalProps {
 const quickActionServices = [
   {
     label: '🏛️ Explore Tourist Places',
-    query: 'Recommend the best tourist places to visit in India.',
+    query: 'Recommend the best tourist places to visit in India',
   },
   {
     label: '📅 Plan My Trip',
-    query: 'I want to plan a personalized trip.',
+    query: 'I want to plan a personalized trip',
   },
   {
     label: '🎭 Explore Culture & Heritage',
-    query: "Show me India's culture and heritage experiences.",
+    query: "Show me India's culture and heritage experiences",
   },
   {
     label: '🍛 Discover Local Experiences',
-    query: 'Show me authentic local food, crafts, festivals, and local experiences.',
+    query: 'Show me authentic local food, crafts, festivals, and local experiences',
   },
   {
     label: '🌐 Explore in My Language',
-    query: 'I want to explore Bharat Bhraman in my preferred language.',
+    query: 'I want to explore Bharat Bhraman in my preferred language',
   },
 ];
 
@@ -48,6 +48,7 @@ export default function BharatAIModal({
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [sessionId] = useState<string>(() => `bharat-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize greeting on open
@@ -56,17 +57,18 @@ export default function BharatAIModal({
       const initialGreeting: ChatMessage = {
         id: 'init-1',
         sender: 'ai',
-        text: `नमस्ते! Welcome to भारत भ्रमण 🇮🇳
+        agentRole: 'Bharat AI Agent',
+        text: `🤖 **Namaste! I am your Bharat AI Travel Agent** 🇮🇳
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+How can I help you with your travel plans today?
 
-I’m your AI travel companion, here to help you discover India your way. I can help you:
+🎯 **What would you like to explore?**
+• **🏛️ Tourist Destinations:** Historic monuments, architecture & hidden spots
+• **🗺️ Custom Trip Planning:** Day-by-day itineraries, pacing & night stays
+• **🍛 Regional Gastronomy:** Street food trails & royal cuisine
+• **🎭 Living Heritage:** 12-month festivals, crafts & wildlife safaris
 
-🗺️ Discover the best tourist places and hidden gems
-🏛️ Explore India’s heritage, culture, food & local experiences
-📅 Plan personalized trips and itineraries
-🌐 Chat with you in your preferred language
-💡 Recommend places based on your interests, time & preferences
-
-Tell me what you’d like to explore, and let’s begin your journey! ✨`,
+Tell me where you want to travel or click a prompt below to start`,
         timestamp: new Date(),
         suggestedPrompts: quickActionServices.map((s) => s.label),
       };
@@ -103,7 +105,8 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
       const aiResponse = await sendChatMessageToN8N(
         textToSend,
         language === 'hi' ? 'hi' : 'en',
-        [...messages, userMsg]
+        [...messages, userMsg],
+        sessionId
       );
       setMessages((prev) => [...prev, aiResponse]);
     } catch (e) {
@@ -113,7 +116,7 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
         {
           id: `ai-err-${Date.now()}`,
           sender: 'ai',
-          text: "Sorry, I'm having trouble connecting right now. Please try again.",
+          text: "I'm ready to assist with your travel planning. Please send your query again.",
           timestamp: new Date(),
           isError: true,
         },
@@ -126,21 +129,21 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-dark/80 backdrop-blur-xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-4xl h-[90vh] max-h-[820px] bg-navy-dark border border-ivory/15 rounded-sm shadow-2xl flex flex-col overflow-hidden"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-4xl h-[90vh] max-h-[820px] bg-[#031527] border-2 border-saffron/50 rounded-lg shadow-2xl flex flex-col overflow-hidden text-ivory my-auto"
       >
         {/* Header */}
-        <div className="px-6 py-4 bg-navy-card border-b border-ivory/10 flex items-center justify-between">
+        <div className="px-6 py-3.5 bg-navy-card border-b border-ivory/10 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-saffron/50 p-0.5 bg-navy shrink-0">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-saffron/60 p-0.5 bg-navy shrink-0 shadow-lg">
               <Image
                 src="/images/logo.png"
-                alt="Bharat Bhraman Logo"
+                alt="Bharat AI Agent Logo"
                 fill
                 sizes="40px"
                 className="object-cover"
@@ -148,26 +151,33 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-heading text-base font-semibold text-white tracking-wider uppercase">
-                  BHARAT BHRAMAN
+                <span className="font-heading text-sm sm:text-base font-semibold text-white tracking-wider uppercase">
+                  BHARAT AI TRAVEL AGENT
                 </span>
-                <span className="px-2 py-0.5 rounded bg-green/20 border border-green/40 text-[9px] font-heading uppercase text-green font-semibold">
-                  LIVE
+                <span className="px-2 py-0.5 rounded bg-green/20 border border-green/40 text-[9px] font-heading uppercase text-green font-semibold animate-pulse">
+                  ● AGENT ACTIVE
                 </span>
               </div>
-              <span className="text-[10px] text-ivory/60 font-body">
-                Your AI Travel Companion
+              <span className="text-[10px] text-ivory/60 font-body flex items-center gap-2">
+                <span>Autonomous Cultural Intelligence</span>
+                <span>•</span>
+                <span className="text-gold">GIS + Cultural Shadow Engine</span>
               </span>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-navy border border-ivory/10 text-ivory/60 hover:text-white hover:border-saffron/40 transition-colors"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex text-[9px] font-heading uppercase px-2 py-0.5 rounded bg-navy border border-ivory/10 text-saffron">
+              ⚡ Multi-Agent Synthesis
+            </span>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-navy border border-ivory/10 text-ivory/60 hover:text-white hover:border-saffron/40 transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Chat Messages Log */}
@@ -179,12 +189,23 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
               animate={{ opacity: 1, y: 0 }}
               className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
             >
-              <div className="flex items-start gap-2.5 max-w-[88%] sm:max-w-[80%]">
+              {msg.sender === 'ai' && (
+                <div className="flex items-center gap-1.5 mb-1.5 ml-9">
+                  <span className="text-[9px] uppercase font-heading tracking-wider px-2 py-0.5 rounded bg-navy border border-saffron/30 text-saffron font-semibold">
+                    {msg.agentRole || '🤖 Bharat AI Agent'}
+                  </span>
+                  <span className="text-[9px] text-ivory/40 font-body">
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              )}
+
+              <div className="flex items-start gap-2.5 max-w-[92%] sm:max-w-[85%]">
                 {msg.sender === 'ai' && (
-                  <div className="relative w-7 h-7 rounded-full overflow-hidden border border-saffron/40 shrink-0 mt-1 bg-navy">
+                  <div className="relative w-7 h-7 rounded-full overflow-hidden border border-saffron/40 shrink-0 mt-1 bg-navy shadow-md">
                     <Image
                       src="/images/logo.png"
-                      alt="AI"
+                      alt="AI Agent"
                       fill
                       sizes="28px"
                       className="object-cover"
@@ -193,10 +214,10 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
                 )}
 
                 <div
-                  className={`p-4 rounded-sm font-body text-xs sm:text-sm leading-relaxed ${
+                  className={`p-4 sm:p-5 rounded-md font-body text-xs sm:text-sm leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-saffron text-white shadow-md'
-                      : 'bg-navy-card text-ivory/90 border border-ivory/10'
+                      ? 'bg-gradient-to-r from-saffron to-saffron/90 text-white shadow-lg border border-saffron/30'
+                      : 'bg-navy-card text-ivory/90 border border-ivory/15 shadow-xl'
                   }`}
                 >
                   <p className="whitespace-pre-line">{msg.text}</p>
@@ -320,9 +341,16 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
           ))}
 
           {loading && (
-            <div className="flex items-center gap-3 text-ivory/60 text-xs font-heading">
-              <div className="w-2 h-2 rounded-full bg-saffron animate-bounce" />
-              <span>Your AI travel companion is thinking...</span>
+            <div className="flex items-center gap-3 p-3.5 rounded bg-navy-card/90 border border-saffron/30 text-xs font-heading text-saffron animate-pulse max-w-md">
+              <div className="w-2.5 h-2.5 rounded-full bg-saffron animate-ping shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-semibold uppercase tracking-wider text-[10px]">
+                  ✦ Bharat AI Agent • Active Reasoning
+                </span>
+                <span className="text-ivory/60 font-body text-[11px]">
+                  Synthesizing GIS route, cultural shadows & travel dossiers...
+                </span>
+              </div>
             </div>
           )}
           <div ref={messagesEndRef} />
@@ -367,7 +395,7 @@ Tell me what you’d like to explore, and let’s begin your journey! ✨`,
             Send →
           </button>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
 }

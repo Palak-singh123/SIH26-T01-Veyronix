@@ -62,7 +62,7 @@ export default function BeyondThePostcard({ onSelectDestination }: BeyondThePost
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               viewport={{ once: true }}
-              onClick={() => onSelectDestination && onSelectDestination(item.location.toLowerCase())}
+              onClick={() => onSelectDestination && onSelectDestination(item.id)}
               className="glass-navy rounded-sm overflow-hidden border border-ivory/10 group hover:border-gold/50 transition-all duration-400 flex flex-col justify-between cursor-pointer"
             >
               <div>
@@ -102,11 +102,11 @@ export default function BeyondThePostcard({ onSelectDestination }: BeyondThePost
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (onSelectDestination) onSelectDestination(item.location.toLowerCase());
+                    if (onSelectDestination) onSelectDestination(item.id);
                   }}
-                  className="text-xs text-gold font-heading uppercase tracking-wider group-hover:text-white transition-colors font-semibold"
+                  className="text-xs text-gold font-heading uppercase tracking-wider group-hover:text-white transition-colors font-semibold hover:underline"
                 >
-                  {isHindi ? 'खोजें →' : isBengali ? 'দেখুন →' : 'Explore →'}
+                  {isHindi ? 'स्थान खोजें →' : isBengali ? 'স্থান দেখুন →' : 'Explore Location →'}
                 </button>
               </div>
             </motion.div>

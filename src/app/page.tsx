@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import DestinationsMegaMenu from '@/components/DestinationsMegaMenu';
 import Hero from '@/components/Hero';
@@ -48,7 +48,20 @@ export default function Home() {
   const [selectedDestId, setSelectedDestId] = useState<string | null>(null);
   const [selectedSanctuaryId, setSelectedSanctuaryId] = useState<string | null>(null);
   const [selectedFestivalId, setSelectedFestivalId] = useState<string | null>(null);
+  const [selectedStateId, setSelectedStateId] = useState<string>('rajasthan');
   const [activePlan, setActivePlan] = useState<ItineraryPlan>(defaultItineraries['lucknow-3day']);
+
+  // Global Ctrl+K / Cmd+K search shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -69,7 +82,10 @@ export default function Home() {
       <DestinationsMegaMenu
         isOpen={isMegaMenuOpen}
         onClose={() => setIsMegaMenuOpen(false)}
-        onSelectState={() => scrollToSection('interactive-map')}
+        onSelectState={(stateId) => {
+          setSelectedStateId(stateId);
+          scrollToSection('interactive-map');
+        }}
         onSelectDestination={(destId) => setSelectedDestId(destId)}
         onSelectPark={(parkId) => setSelectedSanctuaryId(parkId)}
       />
@@ -89,44 +105,60 @@ export default function Home() {
       </div>
 
       {/* ── 03: Interactive India Map (Destinations, Parks, Shadows) ── */}
-      <InteractiveIndiaMap
-        onSelectDestination={(destId) => setSelectedDestId(destId)}
-        onSelectPark={(parkId) => setSelectedSanctuaryId(parkId)}
-        onRevealShadow={() => scrollToSection('cultural-shadows')}
-      />
+      <div id="explore">
+        <div id="gis-map">
+          <InteractiveIndiaMap
+            selectedStateId={selectedStateId}
+            onSelectState={(stateId) => setSelectedStateId(stateId)}
+            onSelectDestination={(destId) => setSelectedDestId(destId)}
+            onSelectPark={(parkId) => setSelectedSanctuaryId(parkId)}
+            onRevealShadow={() => scrollToSection('cultural-shadows')}
+          />
+        </div>
+      </div>
 
       {/* ── 04: Signature Feature: Cultural Shadows ─────────── */}
       <CulturalShadows />
 
       {/* ── 05: Journeys Through Bharat (Thematic Circuits & AI Routes) ── */}
-      <TourismCircuits
-        onPlanWithAI={(circuitName) => setIsAIPlannerOpen(true)}
-        onSelectCity={(city) => setSelectedDestId(city.toLowerCase())}
-      />
+      <div id="circuits">
+        <TourismCircuits
+          onPlanWithAI={(circuitName) => setIsAIPlannerOpen(true)}
+          onSelectCity={(city) => setSelectedDestId(city.toLowerCase())}
+        />
+      </div>
 
       {/* ── 06: India Through the Lens (Documentary Heritage Stories) ── */}
-      <IndiaThroughTheLens
-        onWatchStory={(docId) => setSelectedDocId(docId)}
-        onSelectLocation={(loc) => setSelectedDestId(loc.toLowerCase())}
-      />
+      <div id="documentaries">
+        <IndiaThroughTheLens
+          onWatchStory={(docId) => setSelectedDocId(docId)}
+          onSelectLocation={(loc) => setSelectedDestId(loc.toLowerCase())}
+        />
+      </div>
 
       {/* ── 07: Bharat Mementos (Authentic Cultural Keepsakes & Artisans) ── */}
       <BharatMementos />
 
       {/* ── 08: India in Season (Annual 12-Month Festival Discovery) ── */}
-      <FestivalCalendar
-        onSelectFestival={(id) => setSelectedFestivalId(id)}
-      />
+      <div id="festivals">
+        <FestivalCalendar
+          onSelectFestival={(id) => setSelectedFestivalId(id)}
+        />
+      </div>
 
       {/* ── 09: Wild Bharat (National Parks & Protected Sanctuaries) ── */}
-      <WildBharat
-        onSelectSanctuary={(id) => setSelectedSanctuaryId(id)}
-      />
+      <div id="wildlife">
+        <WildBharat
+          onSelectSanctuary={(id) => setSelectedSanctuaryId(id)}
+        />
+      </div>
 
       {/* ── 10: Beyond the Postcard (Hidden Waterfalls, Caves & Forts) ── */}
-      <BeyondThePostcard
-        onSelectDestination={(destId) => setSelectedDestId(destId)}
-      />
+      <div id="hidden-gems">
+        <BeyondThePostcard
+          onSelectDestination={(destId) => setSelectedDestId(destId)}
+        />
+      </div>
 
       {/* ── 11: Plan Smart (24x7 Tourist Helplines & Climate Guide) ── */}
       <SmartTravelSection />
@@ -182,12 +214,17 @@ export default function Home() {
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         onSelectResult={(type, id) => {
-          if (type === 'destination') {
+          if (type === 'state') {
+            setSelectedStateId(id);
+            scrollToSection('interactive-map');
+          } else if (type === 'destination') {
             setSelectedDestId(id);
           } else if (type === 'national-park') {
             setSelectedSanctuaryId(id);
           } else if (type === 'festival') {
             setSelectedFestivalId(id);
+          } else if (type === 'circuit') {
+            scrollToSection('circuits');
           }
         }}
         onAskAI={() => {

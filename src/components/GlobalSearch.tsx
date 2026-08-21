@@ -135,13 +135,13 @@ export default function GlobalSearch({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 sm:pt-28 bg-navy-dark/85 backdrop-blur-2xl">
-      <motion.div
-        initial={{ opacity: 0, y: -20, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.96 }}
-        transition={{ duration: 0.25 }}
-        className="w-full max-w-2xl bg-navy-card border border-ivory/15 rounded-sm shadow-2xl overflow-hidden flex flex-col"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-start justify-center p-4 pt-20 sm:pt-28 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-2xl bg-[#031527] border-2 border-gold/40 rounded-lg shadow-2xl overflow-hidden flex flex-col text-ivory"
       >
         {/* Search Bar */}
         <div className="p-4 bg-navy-dark flex items-center gap-3 border-b border-ivory/10">
@@ -247,7 +247,7 @@ export default function GlobalSearch({
             </div>
           ) : null}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

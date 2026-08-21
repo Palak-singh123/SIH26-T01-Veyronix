@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { allAnnualFestivals, PanIndiaFestival } from '@/data/festivalsData';
 import { useLanguage } from '@/context/LanguageContext';
 import { useBookmarks } from '@/context/BookmarksContext';
@@ -30,13 +31,13 @@ export default function FestivalModal({
   const saved = isBookmarked(fest.id);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-dark/90 backdrop-blur-2xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-3xl max-h-[90vh] bg-navy-dark border border-ivory/15 rounded-sm shadow-2xl flex flex-col overflow-hidden"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-3xl max-h-[90vh] bg-[#031527] border-2 border-gold/40 rounded-lg shadow-2xl flex flex-col overflow-hidden text-ivory my-auto"
       >
         {/* Hero Header */}
         <div className="relative h-60 sm:h-72 w-full overflow-hidden shrink-0">
@@ -159,11 +160,19 @@ export default function FestivalModal({
             </button>
           </div>
 
-          <button onClick={onClose} className="text-xs text-ivory/50 hover:text-white font-heading">
-            {isHindi ? 'बंद करें' : isBengali ? 'বন্ধ করুন' : 'Close View'}
-          </button>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/festivals"
+              className="text-saffron hover:text-white font-heading uppercase text-[10px] underline tracking-wider"
+            >
+              All 12-Month Festivals →
+            </Link>
+            <button onClick={onClose} className="px-3 py-1 rounded bg-navy-card border border-ivory/20 text-xs text-ivory/70 hover:text-white font-heading">
+              {isHindi ? 'बंद करें' : isBengali ? 'বন্ধ করুন' : 'Close View'}
+            </button>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

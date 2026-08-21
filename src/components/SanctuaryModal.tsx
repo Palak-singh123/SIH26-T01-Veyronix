@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { nationalParks, NationalPark } from '@/data/nationalParksData';
 
 export interface SanctuaryDetail {
@@ -88,9 +89,24 @@ export default function SanctuaryModal({
         activities: ['Chuka Beach Eco-Cottages', 'Jungle Jeep Safari', 'Sharda Canal Birding'],
         guidelines: 'Night driving is strictly prohibited in core tiger corridors.',
       }
+    : sanctuaryId.includes('katarniaghat')
+    ? {
+        id: 'katarniaghat',
+        name: 'Katarniaghat Wildlife Sanctuary',
+        location: 'Bahraich, Uttar Pradesh',
+        state: 'Uttar Pradesh',
+        importance: 'Strategic Terai corridor connecting Dudhwa and Bardia National Park in Nepal. Celebrated for its tranquil Girwa River boating among swimming tigers and endangered Gharials.',
+        wildlife: ['Gharial', 'Gangetic Dolphin', 'Royal Bengal Tiger', 'Indian Leopard', 'Swamp Deer', 'Otters'],
+        image: '/images/hero-bg.jpg',
+        badge: 'Terai Eco-Corridor',
+        bestSeason: 'November to April',
+        landscape: 'Girwa river wetlands, teak-sal forests, and lush Indo-Nepal border floodplains',
+        activities: ['Girwa River Boating', 'Watchtower Wildlife Spotting', 'Jungle Jeep Safari'],
+        guidelines: 'Boating is regulated by the Forest Department. Maintain silence near riverbanks.',
+      }
     : {
         id: 'dudhwa',
-        name: 'Dudhwa National Park',
+        name: 'Dudhwa National Park & Tiger Reserve',
         location: 'Lakhimpur Kheri, Uttar Pradesh',
         state: 'Uttar Pradesh',
         importance: 'Vast Terai ecosystem home to Tigers, One-Horned Rhinoceros, and the rare Swamp Deer (Barasingha) amidst towering Sal canopies.',
@@ -104,13 +120,13 @@ export default function SanctuaryModal({
       };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-dark/90 backdrop-blur-2xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-4xl max-h-[90vh] bg-navy-dark border border-ivory/15 rounded-sm shadow-2xl flex flex-col overflow-hidden"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-4xl max-h-[90vh] bg-[#031527] border-2 border-green/50 rounded-lg shadow-2xl flex flex-col overflow-hidden text-ivory my-auto"
       >
         {/* Visual Hero Header */}
         <div className="relative h-60 sm:h-72 w-full overflow-hidden shrink-0">
@@ -246,11 +262,19 @@ export default function SanctuaryModal({
             )}
           </div>
 
-          <button onClick={onClose} className="text-xs text-ivory/50 hover:text-white font-heading">
-            Close View
-          </button>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/national-parks"
+              className="text-green-light hover:text-white font-heading uppercase text-[10px] underline tracking-wider"
+            >
+              Browse All National Parks →
+            </Link>
+            <button onClick={onClose} className="px-3 py-1 rounded bg-navy-card border border-ivory/20 text-xs text-ivory/70 hover:text-white font-heading">
+              Close View
+            </button>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

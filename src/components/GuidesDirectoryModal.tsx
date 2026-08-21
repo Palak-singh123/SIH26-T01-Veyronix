@@ -58,13 +58,13 @@ export default function GuidesDirectoryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-dark/90 backdrop-blur-2xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-5xl max-h-[90vh] bg-navy-card border border-ivory/15 rounded-sm shadow-2xl overflow-hidden flex flex-col"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-5xl max-h-[90vh] bg-[#031527] border-2 border-gold/40 rounded-lg shadow-2xl overflow-hidden flex flex-col text-ivory my-auto"
       >
         {/* Header */}
         <div className="px-6 py-4 bg-navy-dark border-b border-ivory/10 flex items-center justify-between">
@@ -326,7 +326,7 @@ export default function GuidesDirectoryModal({
             Done
           </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

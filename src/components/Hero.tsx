@@ -177,10 +177,10 @@ export default function Hero() {
             {t.exploreButton}
           </button>
           <button
-            onClick={() => scrollToSection('cultural-shadows')}
+            onClick={() => scrollToSection('gis-map')}
             className="btn-secondary text-xs !py-3.5 !px-8 backdrop-blur-md"
           >
-            {t.discoverShadows}
+            {t.planMyJourney}
           </button>
         </motion.div>
       </div>

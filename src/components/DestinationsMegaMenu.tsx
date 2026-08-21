@@ -62,13 +62,13 @@ export default function DestinationsMegaMenu({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-24 px-4 pb-6 bg-navy-dark/90 backdrop-blur-2xl overflow-y-auto">
-      <motion.div
-        initial={{ opacity: 0, y: -20, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.98 }}
-        transition={{ duration: 0.28, ease: 'easeOut' }}
-        className="w-full max-w-6xl bg-navy-card border border-ivory/15 rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-start justify-center pt-20 sm:pt-24 px-4 pb-6 bg-black/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-6xl bg-[#031527] border-2 border-gold/40 rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[85vh] text-ivory"
       >
         {/* ── Top Header & Tab Navigation ─────────────────── */}
         <div className="p-4 sm:p-6 bg-navy-dark border-b border-ivory/10 flex flex-wrap items-center justify-between gap-4">
@@ -315,7 +315,7 @@ export default function DestinationsMegaMenu({
             Close Panel [ESC]
           </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
