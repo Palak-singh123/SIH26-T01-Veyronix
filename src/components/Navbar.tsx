@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import LanguageSelector from './LanguageSelector';
 import ThemeSelector from './ThemeSelector';
 import { useLanguage } from '@/context/LanguageContext';
@@ -93,7 +94,7 @@ export default function Navbar({
     { label: 'Shadows', href: '#cultural-shadows', pageRoute: '/cultural-shadows', icon: '✦' },
     { label: 'Stories', href: '#documentaries', pageRoute: '/stories', icon: '🎬' },
     { label: 'Guides', href: '#guides', pageRoute: '/guides', icon: '👥' },
-    { label: 'My Bharat', href: '/my-bharat', pageRoute: '/my-bharat', icon: '🇮🇳' },
+    { label: 'Dashboard', href: '/my-bharat', pageRoute: '/my-bharat', icon: '🇮🇳' },
   ];
 
   return (
@@ -243,6 +244,16 @@ export default function Navbar({
               </span>
             </button>
 
+            {/* My Bharat Dashboard Link */}
+            <Link
+              href="/my-bharat"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-gold/20 via-saffron/20 to-gold/20 border border-gold/50 hover:border-gold text-xs font-heading font-semibold uppercase text-gold hover:text-white transition-all shadow-md group"
+              title="My Bharat Personal Dashboard"
+            >
+              <span>🇮🇳</span>
+              <span className="font-semibold tracking-wider">Dashboard</span>
+            </Link>
+
             {/* AI Guide CTA */}
             <button
               onClick={onOpenAIPlanner}
@@ -318,6 +329,16 @@ export default function Navbar({
 
             {/* Mobile Navigation Links */}
             <div className="flex flex-col items-center gap-3 w-full max-w-sm">
+              {/* Dashboard Direct Button */}
+              <Link
+                href="/my-bharat"
+                onClick={() => setIsOpen(false)}
+                className="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-gold/25 via-saffron/25 to-gold/25 border border-gold text-center text-sm font-heading tracking-[0.15em] uppercase text-gold font-bold flex items-center justify-center gap-2 shadow-lg"
+              >
+                <span>🇮🇳</span>
+                <span>My Bharat Dashboard</span>
+              </Link>
+
               {/* Mega Menu Button */}
               <button
                 onClick={() => {
